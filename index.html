@@ -8,19 +8,26 @@
 </head>
 <body>
     <div class="app">
-        <h1>Menstrual Cycle Tracker</h1>
-        <form id="tracker-form">
+        <header>
+            <h1>My Cycle</h1>
+        </header>
+
+        <section class="input-section">
+            <form id="settings-form">
+            <div class="form-group">
             <label for="startDate">Last Period Start Date:</label>
-            <input type="date" id="startDate" required>
-
+            <input type="date" id="startDate" required />
+        </div>
+        <div class="form-group">
             <label for="cycleLength">Average Cycle Length (days):</label>
-            <input type="number" id="cycleLength" min="20" max="45" value="28" required>
-
+            <input type="number" id="cycleLength" min="20" max="45" value="28" required />
+        </div>
+        <div class="form-group">
             <label for="periodLength">Period Length (days):</label>
-            <input type="number" id="periodLength" min="2" max="10" value="5" required>
-
-            <button type="submit">Predict Next Period</button>
-        </form>
+            <input type="number" id="periodLength" min="2" max="10" value="5" required />
+        </div>
+            <button type="submit">Save Settings</button>
+      </form>
     
 </body>
 </html>
