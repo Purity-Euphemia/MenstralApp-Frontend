@@ -1,0 +1,23 @@
+*{
+    box-sizing: border-box;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background: #fafafa;
+    color:#333;
+}
+.app{
+    max-width: 480px;
+    margin: 1rem auto;
+    padding: 1.5rem;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+header h1 {
+    text-align: center;
+    color: #d63384;
+}
