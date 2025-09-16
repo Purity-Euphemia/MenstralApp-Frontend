@@ -48,3 +48,59 @@ button {
     cursor: pointer;
     font-weight: bold;
 }
+button:hover {
+    background: #b82c6e;
+}
+.symptom-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+.symptom-group label {
+    background: #ffe6f0;
+    padding: 0.5rem;
+    border-radius: 6px;
+    cursor: pointer;
+}
+#calendar {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
+}
+.date-box {
+    width: 100%;
+    padding: 0.8rem 0;
+    text-align: center;
+    border-radius: 6px;
+    border: 1px solid #ddd;
+    position: relative;
+    user-select: none;
+}
+.date-box.fertile {
+    background: #d4edda;
+    color: #155724;
+}
+.date-box.ovulation {
+    background: #cce5ff;
+    color: #004085;
+}
+.date-box.period {
+    background: #ffcfd2;
+    color: #9b1c31;
+}
+.insights-section {
+    margin-top: 2rem;
+    padding: 1rem;
+    background: #f5f5f5;
+    border-radius: 8px;
+}
+.insights-section div {
+    margin-bottom: 0.5rem;
+}
+.daily-insights {
+    background: #ffe6f0;
+    padding: 1rem 1.5rem;
+    border-radius: 10px;
+    margin: 1rem 0 2rem 0;
+    color: #9b1c31;
+}
