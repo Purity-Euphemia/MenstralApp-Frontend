@@ -21,3 +21,30 @@ header h1 {
     text-align: center;
     color: #d63384;
 }
+.input-section, .calendar-section, .insights-section {
+    margin-bottom: 2rem;
+}
+.form-group {
+    margin-bottom: 1rem;
+}
+.form-group label {
+    display: block;
+    margin-bottom: 0.4rem;
+    font-weight: bold;
+}
+input[type="date"],
+input[type="number"] {
+    width: 100%;
+    padding: 0.5rem;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+}
+button {
+    padding: 0.8rem 1.2rem;
+    background: #d63384;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+}
