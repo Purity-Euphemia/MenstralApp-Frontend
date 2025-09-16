@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menstral Tracker</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+    <div class="app">
+        <h1>Menstrual Cycle Tracker</h1>
+        <form id="tracker-form">
+            <label for="startDate">Last Period Start Date:</label>
+            <input type="date" id="startDate" required>
+
+            <label for="cycleLength">Average Cycle Length (days):</label>
+            <input type="number" id="cycleLength" min="20" max="45" value="28" required>
+
+            <label for="periodLength">Period Length (days):</label>
+            <input type="number" id="periodLength" min="2" max="10" value="5" required>
+
+            <button type="submit">Predict Next Period</button>
+        </form>
+    
+</body>
+</html>
