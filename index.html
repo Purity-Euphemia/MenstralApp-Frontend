@@ -1,62 +1,85 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Menstral Tracker</title>
-    <link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Flo Lite</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-    <div class="app">
-        <header>
-            <h1>My Cycle</h1>
-        </header>
 
-         <section class="daily-insights">
-            <h2>Today</h2>
-            <div class="cycle-day">Cycle Day: <strong id="cycleDay">-</strong> of <strong id="cycleLengthDisplay">-</strong></div>
-            <div class="current-phase" id="currentPhase">-</div>
-            <div class="daily-tip" id="dailyTip">Loading your daily insights...</div>
-            <button id="logPeriodBtn">Log Period Start</button>
-        </section>
-
-        <section class="input-section">
-            <form id="settings-form">
-            <div class="form-group">
-            <label for="startDate">Last Period Start Date:</label>
-            <input type="date" id="startDate" required />
-        </div>
-        <div class="form-group">
-            <label for="cycleLength">Average Cycle Length (days):</label>
-            <input type="number" id="cycleLength" min="20" max="45" value="28" required />
-        </div>
-        <div class="form-group">
-            <label for="periodLength">Period Length (days):</label>
-            <input type="number" id="periodLength" min="2" max="10" value="5" required />
-        </div>
-            <button type="submit">Save Settings</button>
-      </form>
-      <div class="symptom-logging">
-        <h2>Log Today</h2>
-        <div class="symptom-group">
-            <label><input type="checkbox" class="symptom" value="cramps"> Cramps</label>
-            <label><input type="checkbox" class="symptom" value="headache"> Headache</label>
-            <label><input type="checkbox" class="symptom" value="mood_swings"> Mood Swings</label>
-            <label><input type="checkbox" class="symptom" value="fatigue"> Fatigue</label>
-        </div>
-            <button id="logSymptoms">Log Symptoms</button>
+  
+  <div id="auth-container" class="app">
+    <h1>Flo Lite</h1>
+    <div id="auth-error"></div>
+    <form id="auth-form">
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" id="email" required />
       </div>
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" id="password" required />
+      </div>
+      <button type="submit" id="auth-submit-btn">Login</button>
+    </form>
+    <p id="toggle-auth">Don't have an account? <button id="toggle-auth-btn" class="link-button">Sign up</button></p>
+  </div>
+
+  
+  <div id="app-container" class="app" style="display:none;">
+    <header>
+      <h1>Flo Lite</h1>
+      <button id="logoutBtn">Logout</button>
+    </header>
+
+    <section class="daily-insights">
+      <h2>Today</h2>
+      <div>Cycle Day: <strong id="cycleDay">-</strong> of <strong id="cycleLengthDisplay">-</strong></div>
+      <div id="currentPhase">-</div>
+      <div id="dailyTip">Loading daily tips...</div>
+      <button id="logPeriodBtn">Log Period Start</button>
     </section>
-    <section class="calendar-section">
-        <h2>Your Cycle Calendar</h2>
-        <div id="calendar"></div>
+
+    <section>
+      <form id="settings-form">
+        <h3>Cycle Settings</h3>
+        <label>Last Period Start Date: <input type="date" id="startDate" required /></label>
+        <label>Cycle Length: <input type="number" id="cycleLength" value="28" /></label>
+        <label>Period Length: <input type="number" id="periodLength" value="5" /></label>
+        <button type="submit">Save</button>
+      </form>
     </section>
-    <section class="insights-section">
-        <h2>Insights</h2>
-        <div id="insights"></div>
+
+    <section>
+      <h3>Symptoms</h3>
+      <div class="symptom-group">
+        <label><input type="checkbox" class="symptom" value="cramps"> Cramps</label>
+        <label><input type="checkbox" class="symptom" value="fatigue"> Fatigue</label>
+        <label><input type="checkbox" class="symptom" value="mood_swings"> Mood Swings</label>
+        <label><input type="checkbox" class="symptom" value="headache"> Headache</label>
+      </div>
+      <button id="logSymptoms">Log Symptoms</button>
+    </section>
+
+    <section>
+      <h3>Calendar</h3>
+      <div id="calendar"></div>
+    </section>
+
+    <section>
+      <h3>Insights</h3>
+      <div id="insights"></div>
     </section>
   </div>
-  <script src="script.js"></script>
- 
+
+  
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+
+<script src="firebase-config.js"></script>
+<script src="script.js"></script>
+
 </body>
 </html>
