@@ -1,10 +1,4 @@
-// script.js
 
-// ===== Replace with your Firebase config in firebase-config.js =====
-// (firebase-config.js should initialize firebase, auth, db)
-
-
-// DOM elements
 const authContainer = document.getElementById("auth-container");
 const appContainer = document.getElementById("app-container");
 const authForm = document.getElementById("auth-form");
@@ -31,7 +25,7 @@ const logSymptomsBtn = document.getElementById("logSymptoms");
 const calendarEl = document.getElementById("calendar");
 const insightsEl = document.getElementById("insights");
 
-// State
+
 let isLoginMode = true;
 let currentUser = null;
 let userData = {
@@ -41,7 +35,7 @@ let userData = {
   symptomsLog: {}
 };
 
-// Utility functions
+
 function formatDate(date) {
   return new Date(date).toISOString().split("T")[0];
 }
@@ -56,7 +50,7 @@ function diffDays(d1, d2) {
   return Math.floor((new Date(d2) - new Date(d1)) / (1000 * 60 * 60 * 24));
 }
 
-// Toggle between login/signup
+
 function toggleAuthMode() {
   isLoginMode = !isLoginMode;
   authSubmitBtn.textContent = isLoginMode ? "Login" : "Register";
@@ -64,14 +58,14 @@ function toggleAuthMode() {
     ? `Don't have an account? <button id="toggle-auth-btn" class="link-button">Sign up</button>`
     : `Already have an account? <button id="toggle-auth-btn" class="link-button">Login</button>`;
 
-  // Re-bind the toggleAuthBtn because innerHTML replaced the button
+  
   document.getElementById("toggle-auth-btn").addEventListener("click", toggleAuthMode);
   authError.textContent = "";
 }
 
 toggleAuthBtn.addEventListener("click", toggleAuthMode);
 
-// Auth form submit (login or register)
+
 authForm.addEventListener("submit", async (e) => {
   e.preventDefault();
   authError.textContent = "";
@@ -83,7 +77,7 @@ authForm.addEventListener("submit", async (e) => {
       await auth.signInWithEmailAndPassword(email, password);
     } else {
       const cred = await auth.createUserWithEmailAndPassword(email, password);
-      // initialize new user in Firestore
+      
       await db.collection("users").doc(cred.user.uid).set({
         startDate: null,
         cycleLength: 28,
@@ -96,12 +90,12 @@ authForm.addEventListener("submit", async (e) => {
   }
 });
 
-// Logout
+
 logoutBtn.addEventListener("click", () => {
   auth.signOut();
 });
 
-// Auth state listener
+
 auth.onAuthStateChanged(async (user) => {
   if (user) {
     currentUser = user;
@@ -113,27 +107,27 @@ auth.onAuthStateChanged(async (user) => {
     if (doc.exists) {
       userData = doc.data();
     } else {
-      // Initialize if new user
+
       await docRef.set(userData);
     }
 
     updateUI();
   } else {
-    // Not logged in
+    
     currentUser = null;
     appContainer.style.display = "none";
     authContainer.style.display = "block";
   }
 });
 
-// Calculate cycle day
+
 function getCycleDay() {
   if (!userData.startDate) return "-";
   const days = diffDays(userData.startDate, new Date());
   return (days % userData.cycleLength) + 1;
 }
 
-// Determine phase
+
 function getPhase(day) {
   if (!userData.startDate) return "-";
   if (day <= userData.periodLength) return "Period";
@@ -142,7 +136,7 @@ function getPhase(day) {
   return "Safe";
 }
 
-// Tip per phase
+
 function getTip(phase) {
   const tips = {
     Period: "Stay hydrated and rest if needed.",
@@ -153,7 +147,7 @@ function getTip(phase) {
   return tips[phase] || "";
 }
 
-// Next period prediction
+
 function getNextPeriod() {
   if (!userData.startDate) return null;
   let date = new Date(userData.startDate);
@@ -163,7 +157,7 @@ function getNextPeriod() {
   return date;
 }
 
-// Update UI with userData
+
 function updateUI() {
   const cd = getCycleDay();
   const phase = getPhase(cd);
@@ -172,7 +166,7 @@ function updateUI() {
   cycleLengthDisplay.textContent = userData.cycleLength;
 
   currentPhaseEl.textContent = phase;
-  // Set class for currentPhaseEl so it styles accordingly
+  
   currentPhaseEl.className = `current-phase ${phase.toLowerCase()}`;
 
   dailyTipEl.textContent = getTip(phase);
@@ -181,7 +175,7 @@ function updateUI() {
   renderInsights();
 }
 
-// Render the calendar with period, fertile window, ovulation
+
 function renderCalendar() {
   calendarEl.innerHTML = "";
   if (!userData.startDate) return;
@@ -210,7 +204,7 @@ function renderCalendar() {
   }
 }
 
-// Render insights
+
 function renderInsights() {
   const next = getNextPeriod();
   insightsEl.innerHTML = next
@@ -218,7 +212,7 @@ function renderInsights() {
     : `<div>No period prediction available</div>`;
 }
 
-// Event handlers
+
 
 settingsForm.addEventListener("submit", async (e) => {
   e.preventDefault();
