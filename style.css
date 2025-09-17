@@ -136,3 +136,20 @@ button:hover {
     background: #f0f0f0;
     color: #555;
 }
+.daily-tip {
+    font-style: italic;
+    margin-bottom: 1rem;
+}
+#logPeriodBtn {
+    background-color: #d63384;
+    color: white;
+    border: none;
+    padding: 0.7rem 1.4rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.3s ease;
+}
+#logPeriodBtn:hover {
+    background-color: #b82c6e;
+}
