@@ -104,3 +104,35 @@ button:hover {
     margin: 1rem 0 2rem 0;
     color: #9b1c31;
 }
+.daily-insights h2 {
+    margin-bottom: 0.8rem;
+    font-weight: 700;
+}
+.cycle-day {
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+}
+.current-phase {
+    font-weight: 700;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    display: inline-block;
+    margin-bottom: 0.5rem;
+    font-size: 1rem;
+}
+.current-phase.period {
+    background: #ffcfd2;
+    color: #9b1c31;
+}
+.current-phase.fertile {
+    background: #d4edda;
+    color: #155724;
+}
+.current-phase.ovulation {
+    background: #cce5ff;
+    color: #004085;
+}
+.current-phase.safe {
+    background: #f0f0f0;
+    color: #555;
+}
