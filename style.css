@@ -1,4 +1,4 @@
-/* style.css */
+
 
 * {
   box-sizing: border-box;
@@ -177,7 +177,7 @@ input[type='password'] {
   display: none;
 }
 
-/* Auth forms */
+
 .auth-form {
   background: #fff0f6;
   padding: 1.5rem;
