@@ -144,21 +144,68 @@ input[type="date"] {
 .emoji {
   font-size: 1.2rem;
 }
-.insight-card {
-  background-color: #fff;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  padding: 12px 16px;
-  margin: 10px 0;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+
+#insightsView {
+  padding: 20px;
+  background-color: #fdfdfd;
+  overflow-y: auto;
+  max-height: 80vh;
 }
 
-.insight-card h4 {
-  margin: 0 0 6px;
+#insightsView h3 {
+  font-size: 1.5rem;
   color: #333;
+  border-bottom: 2px solid #e0e0e0;
+  padding-bottom: 5px;
+  margin-bottom: 15px;
 }
 
 .phase-list {
-  padding-left: 20px;
+  list-style-type: none;
+  padding: 0;
+  margin: 0 0 30px 0;
 }
 
+.phase-list li {
+  background-color: #f0f8ff;
+  border-left: 4px solid #4682b4;
+  margin-bottom: 8px;
+  padding: 10px 15px;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  color: #333;
+  transition: background-color 0.3s ease;
+}
+
+.phase-list li:hover {
+  background-color: #e6f0fa;
+}
+
+.insight-card {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-left: 5px solid #ff69b4;
+  border-radius: 10px;
+  padding: 15px 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.insight-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+}
+
+.insight-card h4 {
+  margin: 0 0 8px 0;
+  color: #cc0066;
+  font-size: 1.2rem;
+}
+
+.insight-card p {
+  margin: 0;
+  color: #444;
+  line-height: 1.5;
+  font-size: 0.95rem;
+}

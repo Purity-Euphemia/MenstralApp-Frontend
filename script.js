@@ -112,7 +112,6 @@ document.addEventListener("DOMContentLoaded", () => {
   function renderInsights() {
     insightsContent.innerHTML = "";
 
-    
     if (!userSettings || !userSettings.startDate) {
       const msg = document.createElement("p");
       msg.textContent = "Please set your cycle settings first.";
@@ -120,42 +119,6 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    const startDate = new Date(userSettings.startDate);
-    const cycleLength = userSettings.cycleLength;
-    const periodLength = userSettings.periodLength;
-
-    const phaseList = document.createElement("ul");
-    phaseList.className = "phase-list";
-
-    function getPhase(day) {
-      const ovulationDay = cycleLength - 14;
-      const fertileStart = ovulationDay - 4;
-      const fertileEnd = ovulationDay + 1;
-
-      if (day <= periodLength) return "Period (Bleeding)";
-      if (day === ovulationDay) return "Ovulation Day";
-      if (day >= fertileStart && day <= fertileEnd) return "Fertile Window";
-      return "Safe Days";
-    }
-
-    for (let i = 0; i < cycleLength; i++) {
-      const date = new Date(startDate);
-      date.setDate(startDate.getDate() + i);
-
-      const day = (i % cycleLength) + 1;
-      const phase = getPhase(day);
-
-      const li = document.createElement("li");
-      li.textContent = `${date.toDateString()}: Day ${day} - ${phase}`;
-      phaseList.appendChild(li);
-    }
-
-    const phaseSection = document.createElement("section");
-    phaseSection.innerHTML = `<h3>Cycle Phase Overview</h3>`;
-    phaseSection.appendChild(phaseList);
-    insightsContent.appendChild(phaseSection);
-
-    
     const eduSection = document.createElement("section");
     eduSection.innerHTML = `<h3>Women's Health Insights</h3>`;
 
@@ -274,20 +237,20 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+  
   if (!userSettings.startDate) {
     startDateInput.valueAsDate = new Date();
   }
 
-  if (logPeriodBtn) {
-    logPeriodBtn.addEventListener("click", () => {
-      const todayStr = new Date().toISOString().split("T")[0];
-      startDateInput.value = todayStr;
-      userSettings.startDate = todayStr;
-      localStorage.setItem("userSettings", JSON.stringify(userSettings));
-      loadApp();
-      alert("Period start logged for today!");
-    });
-  }
+  
+  logPeriodBtn.addEventListener("click", () => {
+    const todayStr = new Date().toISOString().split("T")[0];
+    startDateInput.value = todayStr;
+    userSettings.startDate = todayStr;
+    localStorage.setItem("userSettings", JSON.stringify(userSettings));
+    loadApp();
+    alert("Period start logged for today!");
+  });
 
   updateUIOnLogin();
 });
