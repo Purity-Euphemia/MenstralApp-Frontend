@@ -112,7 +112,7 @@ document.addEventListener("DOMContentLoaded", () => {
   function renderInsights() {
     insightsContent.innerHTML = "";
 
-    // --- Section 1: Cycle Phase Overview ---
+    
     if (!userSettings || !userSettings.startDate) {
       const msg = document.createElement("p");
       msg.textContent = "Please set your cycle settings first.";
@@ -155,7 +155,7 @@ document.addEventListener("DOMContentLoaded", () => {
     phaseSection.appendChild(phaseList);
     insightsContent.appendChild(phaseSection);
 
-    // --- Section 2: Educational Insights ---
+    
     const eduSection = document.createElement("section");
     eduSection.innerHTML = `<h3>Women's Health Insights</h3>`;
 
