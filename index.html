@@ -36,7 +36,7 @@
       </div>
     </header>
 
-    <!-- Home View -->
+    
     <div id="homeView">
       <section class="daily-insights">
         <h2>Today</h2>
@@ -57,11 +57,11 @@
           </label>
           <label>
             Cycle Length:
-            <input type="number" id="cycleLength" value="28" />
+            <input type="number" id="cycleLength" value="28" min="15" max="45" />
           </label>
           <label>
             Period Length:
-            <input type="number" id="periodLength" value="5" />
+            <input type="number" id="periodLength" value="5" min="1" max="10" />
           </label>
           <button type="submit">Save</button>
         </form>

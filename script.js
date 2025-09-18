@@ -33,8 +33,28 @@ document.addEventListener("DOMContentLoaded", () => {
 
   let isLoggedIn = JSON.parse(localStorage.getItem("isLoggedIn")) || false;
 
+  
   const educationalInsights = [
-    
+    {
+      title: "Understanding Your Cycle",
+      content:
+        "Tracking your menstrual cycle helps identify patterns and better manage your health and fertility."
+    },
+    {
+      title: "Ovulation and Fertility",
+      content:
+        "Ovulation typically occurs 14 days before your next period. Fertile window is the best time for conception."
+    },
+    {
+      title: "Period Care",
+      content:
+        "During your period, focus on rest, hydration, and proper nutrition to ease symptoms."
+    },
+    {
+      title: "Safe Days",
+      content:
+        "Safe days are times in your cycle with lower chances of conception, but remember this varies by individual."
+    }
   ];
 
   function updateUIOnLogin() {
@@ -128,23 +148,41 @@ document.addEventListener("DOMContentLoaded", () => {
     loadApp();
   });
 
-  
   function getPhase(day) {
     const ovulationDay = userSettings.cycleLength - 14;
     const fertileStart = ovulationDay - 4;
     const fertileEnd = ovulationDay + 1;
 
     if (day <= userSettings.periodLength) {
-      return { name: "period", label: "Period (Bleeding)", emoji: "🩸", tip: "Rest and hydrate." };
+      return {
+        name: "period",
+        label: "Period (Bleeding)",
+        emoji: "🩸",
+        tip: "Rest and hydrate."
+      };
     } else if (day === ovulationDay) {
-      return { name: "ovulation", label: "Ovulation Day", emoji: "💧", tip: "High chance of conception." };
+      return {
+        name: "ovulation",
+        label: "Ovulation Day",
+        emoji: "💧",
+        tip: "High chance of conception."
+      };
     } else if (day >= fertileStart && day <= fertileEnd) {
-      return { name: "fertile", label: "Fertile Window", emoji: "🌱", tip: "Fertility is high. Track symptoms." };
+      return {
+        name: "fertile",
+        label: "Fertile Window",
+        emoji: "🌱",
+        tip: "Fertility is high. Track symptoms."
+      };
     } else {
-      return { name: "safe", label: "Safe Days", emoji: "✅", tip: "Low chance of conception." };
+      return {
+        name: "safe",
+        label: "Safe Days",
+        emoji: "✅",
+        tip: "Low chance of conception."
+      };
     }
   }
-
 
   function renderCalendar() {
     calendarContainer.innerHTML = "";
@@ -171,10 +209,8 @@ document.addEventListener("DOMContentLoaded", () => {
         box.classList.add("today");
       }
 
-      
       box.addEventListener("click", () => {
         if (confirm(`Set ${date.toDateString()} as new Period Start Date?`)) {
-          
           userSettings.startDate = date.toISOString().split("T")[0];
           startDateInput.value = userSettings.startDate;
           localStorage.setItem("userSettings", JSON.stringify(userSettings));
@@ -186,7 +222,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  
   function loadApp() {
     const startDate = new Date(userSettings.startDate);
     if (isNaN(startDate)) return;
@@ -206,7 +241,6 @@ document.addEventListener("DOMContentLoaded", () => {
     renderCalendar();
   }
 
-  
   if (logPeriodBtn) {
     logPeriodBtn.addEventListener("click", () => {
       const todayStr = new Date().toISOString().split("T")[0];
