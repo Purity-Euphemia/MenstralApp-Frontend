@@ -34,46 +34,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let isLoggedIn = JSON.parse(localStorage.getItem("isLoggedIn")) || false;
 
   const educationalInsights = [
-    {
-      title: "Early Signs of Pregnancy",
-      content: "Missed period, nausea, fatigue, tender breasts, and frequent urination can all be early signs of pregnancy."
-    },
-    {
-      title: "How to Clean Your Vulva",
-      content: "Use warm water to clean the external area. Avoid using soap inside the vagina, as it can disrupt natural pH."
-    },
-    {
-      title: "Vaginal Discharge Color Guide",
-      content: "Clear or white is normal. Yellow, green, or gray with odor may signal infection."
-    },
-    {
-      title: "How to Delay or Stop a Period",
-      content: "Hormonal birth control can delay your period. Talk to your doctor about safe options."
-    },
-    {
-      title: "DIY Period Products",
-      content: "Try reusable cloth pads, menstrual cups, or period underwear as sustainable options."
-    },
-    {
-      title: "What to Do After Unprotected Sex",
-      content: "Consider emergency contraception, get tested for STIs, and consult a healthcare provider."
-    },
-    {
-      title: "Spotting vs. Period vs. Bleeding",
-      content: "Spotting is light bleeding. Period is regular cycle bleeding. Heavy or irregular bleeding may need medical advice."
-    },
-    {
-      title: "Birth Control 101",
-      content: "Pills, patches, IUDs, condoms, and implants are all options. Choose what suits your lifestyle and health."
-    },
-    {
-      title: "Nonhormonal Birth Control",
-      content: "Condoms, copper IUD, and fertility awareness methods are hormone-free choices."
-    },
-    {
-      title: "Is Your Vulva Normal?",
-      content: "Vulvas come in all shapes, sizes, and colors. There’s no 'normal' look. What matters is your comfort and health."
-    }
+    
   ];
 
   function updateUIOnLogin() {
@@ -111,32 +72,25 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function renderInsights() {
     insightsContent.innerHTML = "";
-
     if (!userSettings || !userSettings.startDate) {
       const msg = document.createElement("p");
       msg.textContent = "Please set your cycle settings first.";
       insightsContent.appendChild(msg);
       return;
     }
-
     const eduSection = document.createElement("section");
     eduSection.innerHTML = `<h3>Women's Health Insights</h3>`;
-
     educationalInsights.forEach(insight => {
       const card = document.createElement("div");
       card.className = "insight-card";
-
       const title = document.createElement("h4");
       title.textContent = insight.title;
-
       const content = document.createElement("p");
       content.textContent = insight.content;
-
       card.appendChild(title);
       card.appendChild(content);
       eduSection.appendChild(card);
     });
-
     insightsContent.appendChild(eduSection);
   }
 
@@ -174,25 +128,7 @@ document.addEventListener("DOMContentLoaded", () => {
     loadApp();
   });
 
-  function loadApp() {
-    const startDate = new Date(userSettings.startDate);
-    if (isNaN(startDate)) return;
-
-    const today = new Date();
-    const diffDays = Math.floor((today - startDate) / (1000 * 60 * 60 * 24));
-    const cycleDay = (diffDays % userSettings.cycleLength) + 1;
-
-    cycleDayDisplay.textContent = cycleDay;
-    cycleLengthDisplay.textContent = userSettings.cycleLength;
-
-    const phase = getPhase(cycleDay);
-    currentPhaseDisplay.textContent = `${phase.emoji} ${phase.label}`;
-    currentPhaseDisplay.className = `current-phase ${phase.name}`;
-    dailyTip.textContent = phase.tip;
-
-    renderCalendar();
-  }
-
+  
   function getPhase(day) {
     const ovulationDay = userSettings.cycleLength - 14;
     const fertileStart = ovulationDay - 4;
@@ -208,6 +144,7 @@ document.addEventListener("DOMContentLoaded", () => {
       return { name: "safe", label: "Safe Days", emoji: "✅", tip: "Low chance of conception." };
     }
   }
+
 
   function renderCalendar() {
     calendarContainer.innerHTML = "";
@@ -233,24 +170,59 @@ document.addEventListener("DOMContentLoaded", () => {
       if (date.toDateString() === today.toDateString()) {
         box.classList.add("today");
       }
+
+      
+      box.addEventListener("click", () => {
+        if (confirm(`Set ${date.toDateString()} as new Period Start Date?`)) {
+          
+          userSettings.startDate = date.toISOString().split("T")[0];
+          startDateInput.value = userSettings.startDate;
+          localStorage.setItem("userSettings", JSON.stringify(userSettings));
+          loadApp();
+        }
+      });
+
       calendarContainer.appendChild(box);
     }
   }
 
   
-  if (!userSettings.startDate) {
-    startDateInput.valueAsDate = new Date();
+  function loadApp() {
+    const startDate = new Date(userSettings.startDate);
+    if (isNaN(startDate)) return;
+
+    const today = new Date();
+    const diffDays = Math.floor((today - startDate) / (1000 * 60 * 60 * 24));
+    const cycleDay = (diffDays % userSettings.cycleLength) + 1;
+
+    cycleDayDisplay.textContent = cycleDay;
+    cycleLengthDisplay.textContent = userSettings.cycleLength;
+
+    const phase = getPhase(cycleDay);
+    currentPhaseDisplay.textContent = `${phase.emoji} ${phase.label}`;
+    currentPhaseDisplay.className = `current-phase ${phase.name}`;
+    dailyTip.textContent = phase.tip;
+
+    renderCalendar();
   }
 
   
-  logPeriodBtn.addEventListener("click", () => {
-    const todayStr = new Date().toISOString().split("T")[0];
-    startDateInput.value = todayStr;
-    userSettings.startDate = todayStr;
-    localStorage.setItem("userSettings", JSON.stringify(userSettings));
-    loadApp();
-    alert("Period start logged for today!");
-  });
+  if (logPeriodBtn) {
+    logPeriodBtn.addEventListener("click", () => {
+      const todayStr = new Date().toISOString().split("T")[0];
+      if (confirm("Set today as new Period Start Date?")) {
+        startDateInput.value = todayStr;
+        userSettings.startDate = todayStr;
+        localStorage.setItem("userSettings", JSON.stringify(userSettings));
+        loadApp();
+        alert("Period start logged for today!");
+      }
+    });
+  }
+
+  if (!userSettings.startDate) {
+    startDateInput.valueAsDate = new Date();
+  }
 
   updateUIOnLogin();
 });

@@ -8,6 +8,7 @@
 </head>
 <body>
 
+  
   <div id="auth-container" class="app">
     <h1>Flo Lite</h1>
     <form id="auth-form">
@@ -24,6 +25,7 @@
     <p>Don't have an account? <button id="toggle-auth-btn" class="link-button">Sign up</button></p>
   </div>
 
+  
   <div id="app-container" class="app hidden">
     <header>
       <h1>Flo Lite</h1>
@@ -34,26 +36,31 @@
       </div>
     </header>
 
-   
+    <!-- Home View -->
     <div id="homeView">
       <section class="daily-insights">
         <h2>Today</h2>
-        <div>Cycle Day: <strong id="cycleDay">-</strong> of <strong id="cycleLengthDisplay">-</strong></div>
+        <div>
+          Cycle Day: <strong id="cycleDay">-</strong> of <strong id="cycleLengthDisplay">-</strong>
+        </div>
         <div id="currentPhase">-</div>
         <div id="dailyTip">Loading daily tips...</div>
-        <button id="logPeriodBtn">Log Period Start</button>
+        <button id="logPeriodBtn">Log Today's Cycle Start</button>
       </section>
 
       <section>
         <form id="settings-form">
           <h3>Cycle Settings</h3>
-          <label>Last Period Start Date:
+          <label>
+            Last Period Start Date:
             <input type="date" id="startDate" required />
           </label>
-          <label>Cycle Length:
+          <label>
+            Cycle Length:
             <input type="number" id="cycleLength" value="28" />
           </label>
-          <label>Period Length:
+          <label>
+            Period Length:
             <input type="number" id="periodLength" value="5" />
           </label>
           <button type="submit">Save</button>
@@ -72,7 +79,7 @@
       </section>
     </div>
 
-  
+    
     <div id="insightsView" style="display:none;">
       <h2>Cycle Insights</h2>
       <div id="insightsContent"></div>
