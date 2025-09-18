@@ -10,7 +10,6 @@
 
   <div id="auth-container" class="app">
     <h1>Flo Lite</h1>
-    <div id="auth-error"></div>
     <form id="auth-form">
       <div class="form-group">
         <label>Email</label>
@@ -22,10 +21,10 @@
       </div>
       <button type="submit" id="auth-submit-btn">Login</button>
     </form>
-    <p id="toggle-auth">Don't have an account? <button id="toggle-auth-btn" class="link-button">Sign up</button></p>
+    <p>Don't have an account? <button id="toggle-auth-btn" class="link-button">Sign up</button></p>
   </div>
 
-  <div id="app-container" class="app" style="display:none;">
+  <div id="app-container" class="app hidden">
     <header>
       <h1>Flo Lite</h1>
       <button id="logoutBtn">Logout</button>
@@ -42,26 +41,27 @@
     <section>
       <form id="settings-form">
         <h3>Cycle Settings</h3>
-        <label>Last Period Start Date: <input type="date" id="startDate" required /></label>
-        <label>Cycle Length: <input type="number" id="cycleLength" value="28" /></label>
-        <label>Period Length: <input type="number" id="periodLength" value="5" /></label>
+        <label>Last Period Start Date:
+          <input type="date" id="startDate" required />
+        </label>
+        <label>Cycle Length:
+          <input type="number" id="cycleLength" value="28" />
+        </label>
+        <label>Period Length:
+          <input type="number" id="periodLength" value="5" />
+        </label>
         <button type="submit">Save</button>
       </form>
     </section>
 
     <section>
-      <h3>Symptoms</h3>
-      <div class="symptom-group">
-        <label><input type="checkbox" class="symptom" value="cramps"> Cramps</label>
-        <label><input type="checkbox" class="symptom" value="fatigue"> Fatigue</label>
-        <label><input type="checkbox" class="symptom" value="mood_swings"> Mood Swings</label>
-        <label><input type="checkbox" class="symptom" value="headache"> Headache</label>
-      </div>
-      <button id="logSymptoms">Log Symptoms</button>
-    </section>
-
-    <section>
       <h3>Calendar</h3>
+      <div class="calendar-legend">
+        <span class="legend-box period"></span> Period
+        <span class="legend-box fertile"></span> Fertile
+        <span class="legend-box ovulation"></span> Ovulation
+        <span class="legend-box safe"></span> Safe Days
+      </div>
       <div id="calendar"></div>
     </section>
 

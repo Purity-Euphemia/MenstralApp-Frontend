@@ -1,176 +1,160 @@
+document.addEventListener("DOMContentLoaded", () => {
+  const authContainer = document.getElementById("auth-container");
+  const appContainer = document.getElementById("app-container");
 
-let users = JSON.parse(localStorage.getItem("users")) || {};
-let currentUser = null;
+  const authForm = document.getElementById("auth-form");
+  const toggleAuthBtn = document.getElementById("toggle-auth-btn");
+  const authSubmitBtn = document.getElementById("auth-submit-btn");
+  const logoutBtn = document.getElementById("logoutBtn");
 
-const authForm = document.getElementById("auth-form");
-const toggleAuthBtn = document.getElementById("toggle-auth-btn");
-const authSubmitBtn = document.getElementById("auth-submit-btn");
-const authError = document.getElementById("auth-error");
-const authContainer = document.getElementById("auth-container");
-const appContainer = document.getElementById("app-container");
-const logoutBtn = document.getElementById("logoutBtn");
+  const startDateInput = document.getElementById("startDate");
+  const cycleLengthInput = document.getElementById("cycleLength");
+  const periodLengthInput = document.getElementById("periodLength");
+  const settingsForm = document.getElementById("settings-form");
 
-let isLogin = true;
+  const calendarContainer = document.getElementById("calendar");
+  const cycleDayDisplay = document.getElementById("cycleDay");
+  const cycleLengthDisplay = document.getElementById("cycleLengthDisplay");
+  const currentPhaseDisplay = document.getElementById("currentPhase");
+  const dailyTip = document.getElementById("dailyTip");
+  const logPeriodBtn = document.getElementById("logPeriodBtn");
 
-toggleAuthBtn.addEventListener("click", () => {
-  isLogin = !isLogin;
-  authSubmitBtn.textContent = isLogin ? "Login" : "Register";
-  toggleAuthBtn.textContent = isLogin ? "Sign up" : "Login";
-});
+  let userSettings = JSON.parse(localStorage.getItem("userSettings")) || {
+    startDate: null,
+    cycleLength: 28,
+    periodLength: 5,
+  };
+  let isLoggedIn = JSON.parse(localStorage.getItem("isLoggedIn")) || false;
 
-authForm.addEventListener("submit", (e) => {
-  e.preventDefault();
-  const email = document.getElementById("email").value.trim();
-  const password = document.getElementById("password").value.trim();
+  function updateUIOnLogin() {
+    if (isLoggedIn) {
+      authContainer.classList.add("hidden");
+      appContainer.classList.remove("hidden");
 
-  if (isLogin) {
-    if (users[email] && users[email].password === password) {
-      currentUser = email;
-      showApp();
+      if (userSettings.startDate) {
+        startDateInput.value = userSettings.startDate;
+      }
+      cycleLengthInput.value = userSettings.cycleLength;
+      periodLengthInput.value = userSettings.periodLength;
+
+      loadApp();
     } else {
-      authError.textContent = "Invalid credentials.";
+      authContainer.classList.remove("hidden");
+      appContainer.classList.add("hidden");
     }
-  } else {
-    if (users[email]) {
-      authError.textContent = "User already exists.";
+  }
+
+  updateUIOnLogin();
+
+  authForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    isLoggedIn = true;
+    localStorage.setItem("isLoggedIn", JSON.stringify(isLoggedIn));
+    updateUIOnLogin();
+  });
+
+  toggleAuthBtn.addEventListener("click", () => {
+    if (authSubmitBtn.textContent === "Login") {
+      authSubmitBtn.textContent = "Register";
+      toggleAuthBtn.textContent = "Already have an account? Login";
     } else {
-      users[email] = {
-        password,
-        data: {
-          startDate: null,
-          cycleLength: 28,
-          periodLength: 5,
-          symptoms: [],
-        },
-      };
-      localStorage.setItem("users", JSON.stringify(users));
-      authError.textContent = "Registration successful! Please log in.";
-      isLogin = true;
       authSubmitBtn.textContent = "Login";
-      toggleAuthBtn.textContent = "Sign up";
+      toggleAuthBtn.textContent = "Don't have an account? Sign up";
+    }
+  });
+
+  logoutBtn.addEventListener("click", () => {
+    isLoggedIn = false;
+    localStorage.setItem("isLoggedIn", JSON.stringify(isLoggedIn));
+    updateUIOnLogin();
+  });
+
+  settingsForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+
+    userSettings.startDate = startDateInput.value;
+    userSettings.cycleLength = parseInt(cycleLengthInput.value);
+    userSettings.periodLength = parseInt(periodLengthInput.value);
+
+    localStorage.setItem("userSettings", JSON.stringify(userSettings));
+    loadApp();
+  });
+
+  function loadApp() {
+    const startDate = new Date(userSettings.startDate);
+    if (isNaN(startDate)) return;
+
+    const today = new Date();
+    const diffDays = Math.floor((today - startDate) / (1000 * 60 * 60 * 24));
+    const cycleDay = (diffDays % userSettings.cycleLength) + 1;
+
+    cycleDayDisplay.textContent = cycleDay;
+    cycleLengthDisplay.textContent = userSettings.cycleLength;
+
+    const phase = getPhase(cycleDay);
+    currentPhaseDisplay.textContent = `${phase.emoji} ${phase.label}`;
+    currentPhaseDisplay.className = `current-phase ${phase.name}`;
+    dailyTip.textContent = phase.tip;
+
+    renderCalendar();
+  }
+
+  function getPhase(day) {
+    const ovulationDay = userSettings.cycleLength - 14;
+    const fertileStart = ovulationDay - 4;
+    const fertileEnd = ovulationDay + 1;
+
+    if (day <= userSettings.periodLength) {
+      return { name: "period", label: "Period (Bleeding)", emoji: "🩸", tip: "Rest and hydrate." };
+    } else if (day === ovulationDay) {
+      return { name: "ovulation", label: "Ovulation Day", emoji: "💧", tip: "High chance of conception." };
+    } else if (day >= fertileStart && day <= fertileEnd) {
+      return { name: "fertile", label: "Fertile Window", emoji: "🌱", tip: "Fertility is high. Track symptoms." };
+    } else {
+      return { name: "safe", label: "Safe Days", emoji: "✅", tip: "Low chance of conception." };
     }
   }
-});
 
-logoutBtn.addEventListener("click", () => {
-  currentUser = null;
-  authContainer.style.display = "block";
-  appContainer.style.display = "none";
-});
+  function renderCalendar() {
+    calendarContainer.innerHTML = "";
 
+    const startDate = new Date(userSettings.startDate);
+    const today = new Date();
 
-function showApp() {
-  authContainer.style.display = "none";
-  appContainer.style.display = "block";
-  loadData();
-}
+    for (let i = 0; i < userSettings.cycleLength; i++) {
+      const date = new Date(startDate);
+      date.setDate(startDate.getDate() + i);
 
+      const dayDiff = Math.floor((date - startDate) / (1000 * 60 * 60 * 24));
+      const cycleDay = (dayDiff % userSettings.cycleLength) + 1;
+      const phase = getPhase(cycleDay);
 
-document.getElementById("settings-form").addEventListener("submit", (e) => {
-  e.preventDefault();
-  const startDate = document.getElementById("startDate").value;
-  const cycleLength = +document.getElementById("cycleLength").value;
-  const periodLength = +document.getElementById("periodLength").value;
-
-  users[currentUser].data.startDate = startDate;
-  users[currentUser].data.cycleLength = cycleLength;
-  users[currentUser].data.periodLength = periodLength;
-  localStorage.setItem("users", JSON.stringify(users));
-  loadData();
-});
-
-
-document.getElementById("logSymptoms").addEventListener("click", () => {
-  const symptoms = Array.from(document.querySelectorAll(".symptom:checked")).map(el => el.value);
-  users[currentUser].data.symptoms = symptoms;
-  localStorage.setItem("users", JSON.stringify(users));
-  alert("Symptoms logged!");
-});
-
-document.getElementById("logPeriodBtn").addEventListener("click", () => {
-  const today = new Date().toISOString().split("T")[0];
-  document.getElementById("startDate").value = today;
-  users[currentUser].data.startDate = today;
-  localStorage.setItem("users", JSON.stringify(users));
-  loadData();
-});
-
-
-function loadData() {
-  const data = users[currentUser].data;
-  if (!data.startDate) return;
-
-  const startDate = new Date(data.startDate);
-  const today = new Date();
-  const diffDays = Math.floor((today - startDate) / (1000 * 60 * 60 * 24));
-  const cycleDay = (diffDays % data.cycleLength) + 1;
-
-  document.getElementById("cycleDay").textContent = cycleDay;
-  document.getElementById("cycleLengthDisplay").textContent = data.cycleLength;
-
-  let phase = "Safe";
-  if (cycleDay <= data.periodLength) {
-    phase = "Period";
-  } else if (cycleDay >= data.cycleLength - 14 && cycleDay <= data.cycleLength - 10) {
-    phase = "Fertile";
-  } else if (cycleDay === data.cycleLength - 14) {
-    phase = "Ovulation";
+      const box = document.createElement("div");
+      box.className = `calendar-box ${phase.name}`;
+      box.innerHTML = `
+        <div class="day-number">${date.getDate()}</div>
+        <div class="emoji">${phase.emoji}</div>
+        <div class="label">${phase.label}</div>
+      `;
+      if (date.toDateString() === today.toDateString()) {
+        box.classList.add("today");
+      }
+      calendarContainer.appendChild(box);
+    }
   }
 
-  const phaseEl = document.getElementById("currentPhase");
-  phaseEl.textContent = phase;
-  phaseEl.className = "current-phase " + phase.toLowerCase();
-
-  document.getElementById("dailyTip").textContent =
-    phase === "Period"
-      ? "Rest and hydrate."
-      : phase === "Fertile"
-      ? "Fertile window. Track carefully."
-      : phase === "Ovulation"
-      ? "Ovulation today!"
-      : "Normal day.";
-
-  renderCalendar(startDate, data);
-  renderInsights(data);
-}
-
-function renderCalendar(startDate, data) {
-  const calendar = document.getElementById("calendar");
-  calendar.innerHTML = "";
-
-  const today = new Date();
-  for (let i = -3; i <= 27; i++) {
-    const date = new Date(today);
-    date.setDate(today.getDate() + i);
-
-    const dayDiff = Math.floor((date - startDate) / (1000 * 60 * 60 * 24));
-    const cycleDay = (dayDiff % data.cycleLength) + 1;
-
-    let phase = "";
-    if (cycleDay <= data.periodLength) phase = "period";
-    else if (cycleDay === data.cycleLength - 14) phase = "ovulation";
-    else if (cycleDay >= data.cycleLength - 14 && cycleDay <= data.cycleLength - 10) phase = "fertile";
-
-    const dayDiv = document.createElement("div");
-    dayDiv.textContent = `${date.toDateString().slice(0, 10)} - Day ${cycleDay}`;
-    dayDiv.className = `calendar-day ${phase}`;
-    calendar.appendChild(dayDiv);
+  if (!userSettings.startDate) {
+    startDateInput.valueAsDate = new Date();
   }
-}
 
-function renderInsights(data) {
-  const insights = document.getElementById("insights");
-  insights.innerHTML = "";
-
-  const ul = document.createElement("ul");
-  if (data.symptoms.length === 0) {
-    ul.innerHTML = "<li>No symptoms logged yet.</li>";
-  } else {
-    data.symptoms.forEach(s => {
-      const li = document.createElement("li");
-      li.textContent = s.replace("_", " ");
-      ul.appendChild(li);
+  if (logPeriodBtn) {
+    logPeriodBtn.addEventListener("click", () => {
+      const todayStr = new Date().toISOString().split("T")[0];
+      startDateInput.value = todayStr;
+      userSettings.startDate = todayStr;
+      localStorage.setItem("userSettings", JSON.stringify(userSettings));
+      loadApp();
+      alert("Period start logged for today!");
     });
   }
-  insights.appendChild(ul);
-}
+});

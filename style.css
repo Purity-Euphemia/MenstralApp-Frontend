@@ -1,5 +1,3 @@
-
-
 * {
   box-sizing: border-box;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -18,11 +16,15 @@ body {
 
 .app {
   background: #fff;
-  max-width: 480px;
+  max-width: 580px;
   width: 100%;
   border-radius: 12px;
   padding: 2rem;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.hidden {
+  display: none;
 }
 
 header {
@@ -32,178 +34,113 @@ header {
   margin-bottom: 1.5rem;
 }
 
-header h1 {
-  color: #d63384;
-}
-
 button {
   background: #d63384;
-  color: #fff;
+  color: white;
   border: none;
-  padding: 0.6rem 1.2rem;
+  padding: 0.5rem 1rem;
   border-radius: 6px;
   cursor: pointer;
-  font-weight: 600;
-  transition: background-color 0.3s ease;
 }
 
 button:hover {
-  background: #b82c6e;
-}
-
-form {
-  margin-top: 1rem;
+  background: #b32c6e;
 }
 
 .form-group {
   margin-bottom: 1rem;
 }
 
-label {
-  font-weight: 600;
-  display: block;
-  margin-bottom: 0.3rem;
-}
-
-input[type='date'],
-input[type='number'],
-input[type='email'],
-input[type='password'] {
+input[type="email"],
+input[type="password"],
+input[type="number"],
+input[type="date"] {
   width: 100%;
   padding: 0.5rem;
   border-radius: 6px;
   border: 1px solid #ccc;
-  font-size: 1rem;
+  margin-top: 0.2rem;
+  margin-bottom: 0.8rem;
 }
 
 .daily-insights {
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
 }
 
-.cycle-day {
-  font-size: 1.1rem;
-  margin-bottom: 0.4rem;
-}
-
-.current-phase {
-  font-weight: 700;
-  font-size: 1.1rem;
-  margin-bottom: 0.4rem;
+#currentPhase {
+  font-weight: bold;
   padding: 0.3rem 0.6rem;
   border-radius: 20px;
   display: inline-block;
+  margin: 0.5rem 0;
 }
 
-.current-phase.period {
-  background: #ffcfd2;
-  color: #9b1c31;
-}
+#currentPhase.period { background: #ffcfd2; color: #9b1c31; }
+#currentPhase.fertile { background: #d4edda; color: #155724; }
+#currentPhase.ovulation { background: #cce5ff; color: #004085; }
+#currentPhase.safe { background: #f0f0f0; color: #555; }
 
-.current-phase.fertile {
-  background: #d4edda;
-  color: #155724;
-}
-
-.current-phase.ovulation {
-  background: #cce5ff;
-  color: #004085;
-}
-
-.current-phase.safe {
-  background: #f0f0f0;
-  color: #555;
-}
-
-.daily-tip {
-  font-style: italic;
-  margin-bottom: 1rem;
-  color: #9b1c31;
-}
-
-.symptom-group {
+.calendar-legend {
   display: flex;
-  gap: 1rem;
-  flex-wrap: wrap;
+  justify-content: space-around;
+  margin-bottom: 1rem;
+  font-size: 0.85rem;
 }
 
-.symptom-group label {
-  background: #ffe6f0;
-  padding: 0.5rem 1rem;
-  border-radius: 6px;
-  cursor: pointer;
-  user-select: none;
-  font-size: 0.9rem;
+.legend-box {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  margin-right: 4px;
+  border-radius: 3px;
 }
 
-.symptom-group input {
-  margin-right: 0.3rem;
-}
+.legend-box.period { background: #ffcfd2; }
+.legend-box.fertile { background: #d4edda; }
+.legend-box.ovulation { background: #cce5ff; }
+.legend-box.safe { background: #f0f0f0; }
 
 #calendar {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  gap: 6px;
-  margin-top: 1rem;
+  gap: 8px;
 }
 
-.date-box {
-  padding: 0.6rem 0;
-  text-align: center;
+.calendar-box {
+  padding: 0.5rem;
   border-radius: 6px;
-  border: 1px solid #ddd;
-  user-select: none;
+  text-align: center;
+  font-size: 0.75rem;
+  min-height: 80px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
-.date-box.period {
+.calendar-box.period {
   background: #ffcfd2;
   color: #9b1c31;
 }
-
-.date-box.ovulation {
-  background: #cce5ff;
-  color: #004085;
-}
-
-.date-box.fertile {
+.calendar-box.fertile {
   background: #d4edda;
   color: #155724;
 }
-
-.date-box.today {
+.calendar-box.ovulation {
+  background: #cce5ff;
+  color: #004085;
+}
+.calendar-box.safe {
+  background: #f0f0f0;
+  color: #555;
+}
+.calendar-box.today {
   border: 2px solid #d63384;
 }
 
-.hidden {
-  display: none;
+.day-number {
+  font-weight: bold;
 }
 
-
-.auth-form {
-  background: #fff0f6;
-  padding: 1.5rem;
-  border-radius: 10px;
-  margin-bottom: 1rem;
-}
-
-.auth-form input {
-  margin-bottom: 1rem;
-}
-
-.auth-form button {
-  width: 100%;
-}
-
-.auth-form p {
-  margin-top: 0.5rem;
-  font-size: 0.9rem;
-}
-
-.auth-form a {
-  color: #d63384;
-  cursor: pointer;
-  text-decoration: underline;
-}
-
-#logout-btn {
-  background: #888;
+.emoji {
+  font-size: 1.2rem;
 }
