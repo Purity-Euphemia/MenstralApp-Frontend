@@ -19,12 +19,62 @@ document.addEventListener("DOMContentLoaded", () => {
   const dailyTip = document.getElementById("dailyTip");
   const logPeriodBtn = document.getElementById("logPeriodBtn");
 
+  const homeViewBtn = document.getElementById("homeViewBtn");
+  const insightsViewBtn = document.getElementById("insightsViewBtn");
+  const homeView = document.getElementById("homeView");
+  const insightsView = document.getElementById("insightsView");
+  const insightsContent = document.getElementById("insightsContent");
+
   let userSettings = JSON.parse(localStorage.getItem("userSettings")) || {
     startDate: null,
     cycleLength: 28,
     periodLength: 5,
   };
+
   let isLoggedIn = JSON.parse(localStorage.getItem("isLoggedIn")) || false;
+
+  const educationalInsights = [
+    {
+      title: "Early Signs of Pregnancy",
+      content: "Missed period, nausea, fatigue, tender breasts, and frequent urination can all be early signs of pregnancy."
+    },
+    {
+      title: "How to Clean Your Vulva",
+      content: "Use warm water to clean the external area. Avoid using soap inside the vagina, as it can disrupt natural pH."
+    },
+    {
+      title: "Vaginal Discharge Color Guide",
+      content: "Clear or white is normal. Yellow, green, or gray with odor may signal infection."
+    },
+    {
+      title: "How to Delay or Stop a Period",
+      content: "Hormonal birth control can delay your period. Talk to your doctor about safe options."
+    },
+    {
+      title: "DIY Period Products",
+      content: "Try reusable cloth pads, menstrual cups, or period underwear as sustainable options."
+    },
+    {
+      title: "What to Do After Unprotected Sex",
+      content: "Consider emergency contraception, get tested for STIs, and consult a healthcare provider."
+    },
+    {
+      title: "Spotting vs. Period vs. Bleeding",
+      content: "Spotting is light bleeding. Period is regular cycle bleeding. Heavy or irregular bleeding may need medical advice."
+    },
+    {
+      title: "Birth Control 101",
+      content: "Pills, patches, IUDs, condoms, and implants are all options. Choose what suits your lifestyle and health."
+    },
+    {
+      title: "Nonhormonal Birth Control",
+      content: "Condoms, copper IUD, and fertility awareness methods are hormone-free choices."
+    },
+    {
+      title: "Is Your Vulva Normal?",
+      content: "Vulvas come in all shapes, sizes, and colors. There’s no 'normal' look. What matters is your comfort and health."
+    }
+  ];
 
   function updateUIOnLogin() {
     if (isLoggedIn) {
@@ -38,13 +88,94 @@ document.addEventListener("DOMContentLoaded", () => {
       periodLengthInput.value = userSettings.periodLength;
 
       loadApp();
+      showHomeView();
     } else {
       authContainer.classList.remove("hidden");
       appContainer.classList.add("hidden");
     }
   }
 
-  updateUIOnLogin();
+  function showHomeView() {
+    homeView.style.display = "block";
+    insightsView.style.display = "none";
+  }
+
+  function showInsightsView() {
+    homeView.style.display = "none";
+    insightsView.style.display = "block";
+    renderInsights();
+  }
+
+  homeViewBtn.addEventListener("click", showHomeView);
+  insightsViewBtn.addEventListener("click", showInsightsView);
+
+  function renderInsights() {
+    insightsContent.innerHTML = "";
+
+    // --- Section 1: Cycle Phase Overview ---
+    if (!userSettings || !userSettings.startDate) {
+      const msg = document.createElement("p");
+      msg.textContent = "Please set your cycle settings first.";
+      insightsContent.appendChild(msg);
+      return;
+    }
+
+    const startDate = new Date(userSettings.startDate);
+    const cycleLength = userSettings.cycleLength;
+    const periodLength = userSettings.periodLength;
+
+    const phaseList = document.createElement("ul");
+    phaseList.className = "phase-list";
+
+    function getPhase(day) {
+      const ovulationDay = cycleLength - 14;
+      const fertileStart = ovulationDay - 4;
+      const fertileEnd = ovulationDay + 1;
+
+      if (day <= periodLength) return "Period (Bleeding)";
+      if (day === ovulationDay) return "Ovulation Day";
+      if (day >= fertileStart && day <= fertileEnd) return "Fertile Window";
+      return "Safe Days";
+    }
+
+    for (let i = 0; i < cycleLength; i++) {
+      const date = new Date(startDate);
+      date.setDate(startDate.getDate() + i);
+
+      const day = (i % cycleLength) + 1;
+      const phase = getPhase(day);
+
+      const li = document.createElement("li");
+      li.textContent = `${date.toDateString()}: Day ${day} - ${phase}`;
+      phaseList.appendChild(li);
+    }
+
+    const phaseSection = document.createElement("section");
+    phaseSection.innerHTML = `<h3>Cycle Phase Overview</h3>`;
+    phaseSection.appendChild(phaseList);
+    insightsContent.appendChild(phaseSection);
+
+    // --- Section 2: Educational Insights ---
+    const eduSection = document.createElement("section");
+    eduSection.innerHTML = `<h3>Women's Health Insights</h3>`;
+
+    educationalInsights.forEach(insight => {
+      const card = document.createElement("div");
+      card.className = "insight-card";
+
+      const title = document.createElement("h4");
+      title.textContent = insight.title;
+
+      const content = document.createElement("p");
+      content.textContent = insight.content;
+
+      card.appendChild(title);
+      card.appendChild(content);
+      eduSection.appendChild(card);
+    });
+
+    insightsContent.appendChild(eduSection);
+  }
 
   authForm.addEventListener("submit", (e) => {
     e.preventDefault();
@@ -157,4 +288,6 @@ document.addEventListener("DOMContentLoaded", () => {
       alert("Period start logged for today!");
     });
   }
+
+  updateUIOnLogin();
 });

@@ -27,48 +27,56 @@
   <div id="app-container" class="app hidden">
     <header>
       <h1>Flo Lite</h1>
-      <button id="logoutBtn">Logout</button>
+      <div>
+        <button id="homeViewBtn">Home</button>
+        <button id="insightsViewBtn">Insights</button>
+        <button id="logoutBtn">Logout</button>
+      </div>
     </header>
 
-    <section class="daily-insights">
-      <h2>Today</h2>
-      <div>Cycle Day: <strong id="cycleDay">-</strong> of <strong id="cycleLengthDisplay">-</strong></div>
-      <div id="currentPhase">-</div>
-      <div id="dailyTip">Loading daily tips...</div>
-      <button id="logPeriodBtn">Log Period Start</button>
-    </section>
+    <!-- HOME VIEW -->
+    <div id="homeView">
+      <section class="daily-insights">
+        <h2>Today</h2>
+        <div>Cycle Day: <strong id="cycleDay">-</strong> of <strong id="cycleLengthDisplay">-</strong></div>
+        <div id="currentPhase">-</div>
+        <div id="dailyTip">Loading daily tips...</div>
+        <button id="logPeriodBtn">Log Period Start</button>
+      </section>
 
-    <section>
-      <form id="settings-form">
-        <h3>Cycle Settings</h3>
-        <label>Last Period Start Date:
-          <input type="date" id="startDate" required />
-        </label>
-        <label>Cycle Length:
-          <input type="number" id="cycleLength" value="28" />
-        </label>
-        <label>Period Length:
-          <input type="number" id="periodLength" value="5" />
-        </label>
-        <button type="submit">Save</button>
-      </form>
-    </section>
+      <section>
+        <form id="settings-form">
+          <h3>Cycle Settings</h3>
+          <label>Last Period Start Date:
+            <input type="date" id="startDate" required />
+          </label>
+          <label>Cycle Length:
+            <input type="number" id="cycleLength" value="28" />
+          </label>
+          <label>Period Length:
+            <input type="number" id="periodLength" value="5" />
+          </label>
+          <button type="submit">Save</button>
+        </form>
+      </section>
 
-    <section>
-      <h3>Calendar</h3>
-      <div class="calendar-legend">
-        <span class="legend-box period"></span> Period
-        <span class="legend-box fertile"></span> Fertile
-        <span class="legend-box ovulation"></span> Ovulation
-        <span class="legend-box safe"></span> Safe Days
-      </div>
-      <div id="calendar"></div>
-    </section>
+      <section>
+        <h3>Calendar</h3>
+        <div class="calendar-legend">
+          <span class="legend-box period"></span> Period
+          <span class="legend-box fertile"></span> Fertile
+          <span class="legend-box ovulation"></span> Ovulation
+          <span class="legend-box safe"></span> Safe Days
+        </div>
+        <div id="calendar"></div>
+      </section>
+    </div>
 
-    <section>
-      <h3>Insights</h3>
-      <div id="insights"></div>
-    </section>
+    <!-- INSIGHTS VIEW -->
+    <div id="insightsView" style="display:none;">
+      <h2>Cycle Insights</h2>
+      <div id="insightsContent"></div>
+    </div>
   </div>
 
   <script src="script.js"></script>
